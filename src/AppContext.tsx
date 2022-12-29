@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 import axios from 'axios';
 import { IFlashcard, IRawFlashcard } from './interfaces';
+import * as tools from './tools';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -28,6 +29,7 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 				const _flashcard: IFlashcard = {
 					...rawFlashcard,
 					isOpen: false,
+					backHtml: tools.convertMarkdownToHtml(rawFlashcard.back)
 				};
 				_flashcards.push(_flashcard);
 			});

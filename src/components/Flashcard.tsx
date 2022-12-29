@@ -18,7 +18,7 @@ export const Flashcard = ({ flashcard }: IProps) => {
 			>
 				{flashcard.categoryName.toUpperCase()}: {flashcard.front}
 			</div>
-			{flashcard.isOpen && <div className="back">{flashcard.back}</div>}
+			{flashcard.isOpen && <div className="back" dangerouslySetInnerHTML={{__html:flashcard.backHtml}}></div>}
 		</div>
 	);
 };

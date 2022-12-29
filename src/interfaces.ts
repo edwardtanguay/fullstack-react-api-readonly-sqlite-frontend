@@ -8,4 +8,5 @@ export interface IRawFlashcard {
 
 export interface IFlashcard extends IRawFlashcard {
 	isOpen: boolean;
+	backHtml: string;
 }
