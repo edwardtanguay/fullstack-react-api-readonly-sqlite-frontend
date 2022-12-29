@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 import axios from 'axios';
-import { ICategoryItem, IFlashcard, IRawFlashcard } from './interfaces';
+import {
+	ICategoryItem,
+	IFlashcard,
+	IRawFlashcard,
+} from './interfaces';
 import * as tools from './tools';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -10,6 +14,8 @@ interface IAppContext {
 	flashcards: IFlashcard[];
 	handleToggleFlashcard: (flashcard: IFlashcard) => void;
 	categoryItems: ICategoryItem[];
+	currentCategoryItemIdCode: string;
+	handleChangeCurrentCategoryItemIdCode: (idCode: string) => void;
 }
 
 interface IAppProvider {
@@ -21,6 +27,8 @@ export const AppContext = createContext<IAppContext>({} as IAppContext);
 export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 	const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
 	const [categoryItems, setCategoryItems] = useState<ICategoryItem[]>([]);
+	const [currentCategoryItemIdCode, setCurrentCategoryItemIdCode] =
+		useState('');
 
 	useEffect(() => {
 		(async () => {
@@ -42,7 +50,10 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 
 	useEffect(() => {
 		(async () => {
-			setCategoryItems((await axios.get(`${backendUrl}/categories`)).data);
+			const _categoryItems: ICategoryItem[] = (await axios.get(`${backendUrl}/categories`))
+				.data;
+			setCategoryItems(_categoryItems);
+			setCurrentCategoryItemIdCode(_categoryItems[0].categoryIdCode);
 		})();
 	}, []);
 
@@ -50,12 +61,19 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 		flashcard.isOpen = !flashcard.isOpen;
 		setFlashcards([...flashcards]);
 	};
+
+	const handleChangeCurrentCategoryItemIdCode = (idCode: string) => {
+		setCurrentCategoryItemIdCode(idCode);
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
 				flashcards,
 				handleToggleFlashcard,
-				categoryItems
+				categoryItems,
+				currentCategoryItemIdCode,
+				handleChangeCurrentCategoryItemIdCode,
 			}}
 		>
 			{children}
