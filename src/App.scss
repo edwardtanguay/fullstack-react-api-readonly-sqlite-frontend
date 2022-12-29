@@ -1,3 +1,4 @@
+$corner: .5rem;
 $header_color: rgb(194, 164, 107);
 
 body {
@@ -25,44 +26,24 @@ body {
 		}
 	}
 
-	.pageWelcome {
-		p {
-			font-size: 1.4rem;
-			strong {
-				color: $header_color;
+	.page {
+
+		.flashcard {
+			margin-top: 1rem;
+			max-width: 35rem;
+
+			.front {
+				background-color: #222;
+				border-radius: $corner $corner 0 0;
+				padding: 1rem;
+			}
+			.back {
+				background-color: #111;
+				border-radius: 0 0 $corner $corner;
+				padding: 1rem;
+				color: rgb(228, 228, 128);
 			}
 		}
 	}
 
-	.pageInfo {
-		.content {
-			margin: 0 auto;
-			width: 90%;
-			display: grid;
-			gap: 3rem;
-			grid-template-columns: 1fr 1fr;
-
-			h2 {
-				color: $header_color;
-			}
-
-			.jobs {
-				.job {
-					background-color: #222;
-					padding: .5rem;
-					margin-bottom: .5rem;
-				}
-			}
-
-			.skills {
-				.skill {
-					margin-bottom: 1rem;
-
-					.name {
-						color: orange;
-					}
-				}
-			}
-		}
-	}
 }
