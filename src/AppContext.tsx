@@ -24,7 +24,7 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 		(async () => {
 			const rawFlashcards = (await axios.get(`${backendUrl}/flashcards`))
 				.data;
-			const _flashcards: IFlashcard[] = [];
+			let _flashcards: IFlashcard[] = [];
 			rawFlashcards.forEach((rawFlashcard: IRawFlashcard) => {
 				const _flashcard: IFlashcard = {
 					...rawFlashcard,
@@ -33,6 +33,7 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 				};
 				_flashcards.push(_flashcard);
 			});
+			_flashcards = tools.randomizeArray(_flashcards);
 			setFlashcards(_flashcards);
 		})();
 	}, []);
