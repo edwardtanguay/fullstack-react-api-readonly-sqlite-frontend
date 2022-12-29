@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 import axios from 'axios';
-import { IFlashcard, IRawFlashcard } from './interfaces';
+import { ICategoryItem, IFlashcard, IRawFlashcard } from './interfaces';
 import * as tools from './tools';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -9,6 +9,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 interface IAppContext {
 	flashcards: IFlashcard[];
 	handleToggleFlashcard: (flashcard: IFlashcard) => void;
+	categoryItems: ICategoryItem[];
 }
 
 interface IAppProvider {
@@ -19,6 +20,7 @@ export const AppContext = createContext<IAppContext>({} as IAppContext);
 
 export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 	const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
+	const [categoryItems, setCategoryItems] = useState<ICategoryItem[]>([]);
 
 	useEffect(() => {
 		(async () => {
@@ -29,7 +31,7 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 				const _flashcard: IFlashcard = {
 					...rawFlashcard,
 					isOpen: false,
-					backHtml: tools.convertMarkdownToHtml(rawFlashcard.back)
+					backHtml: tools.convertMarkdownToHtml(rawFlashcard.back),
 				};
 				_flashcards.push(_flashcard);
 			});
@@ -38,15 +40,22 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 		})();
 	}, []);
 
+	useEffect(() => {
+		(async () => {
+			setCategoryItems((await axios.get(`${backendUrl}/categories`)).data);
+		})();
+	}, []);
+
 	const handleToggleFlashcard = (flashcard: IFlashcard) => {
 		flashcard.isOpen = !flashcard.isOpen;
 		setFlashcards([...flashcards]);
-	}
+	};
 	return (
 		<AppContext.Provider
 			value={{
 				flashcards,
-				handleToggleFlashcard
+				handleToggleFlashcard,
+				categoryItems
 			}}
 		>
 			{children}

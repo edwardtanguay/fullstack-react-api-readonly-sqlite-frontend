@@ -10,3 +10,9 @@ export interface IFlashcard extends IRawFlashcard {
 	isOpen: boolean;
 	backHtml: string;
 }
+
+export interface ICategoryItem {
+	categoryIdCode: string;
+	categoryName: string;
+	total: number;
+}
