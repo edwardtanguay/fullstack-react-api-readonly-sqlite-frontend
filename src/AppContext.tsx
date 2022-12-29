@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 import axios from 'axios';
-import { IFlashcard } from './interfaces';
+import { IFlashcard, IRawFlashcard } from './interfaces';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -20,14 +20,24 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 
 	useEffect(() => {
 		(async () => {
-			setFlashcards((await axios.get(`${backendUrl}/flashcards`)).data);
+			const rawFlashcards = (await axios.get(`${backendUrl}/flashcards`))
+				.data;
+			const _flashcards: IFlashcard[] = [];
+			rawFlashcards.forEach((rawFlashcard: IRawFlashcard) => {
+				const _flashcard: IFlashcard = {
+					...rawFlashcard,
+					isOpen: false,
+				};
+				_flashcards.push(_flashcard);
+			});
+			setFlashcards(_flashcards);
 		})();
 	}, []);
 
 	return (
 		<AppContext.Provider
 			value={{
-				flashcards
+				flashcards,
 			}}
 		>
 			{children}
