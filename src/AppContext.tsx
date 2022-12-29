@@ -7,6 +7,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface IAppContext {
 	flashcards: IFlashcard[];
+	handleToggleFlashcard: (flashcard: IFlashcard) => void;
 }
 
 interface IAppProvider {
@@ -34,10 +35,15 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 		})();
 	}, []);
 
+	const handleToggleFlashcard = (flashcard: IFlashcard) => {
+		flashcard.isOpen = !flashcard.isOpen;
+		setFlashcards([...flashcards]);
+	}
 	return (
 		<AppContext.Provider
 			value={{
 				flashcards,
+				handleToggleFlashcard
 			}}
 		>
 			{children}

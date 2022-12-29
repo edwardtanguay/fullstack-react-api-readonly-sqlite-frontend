@@ -36,6 +36,8 @@ body {
 				background-color: #222;
 				border-radius: $corner $corner 0 0;
 				padding: 1rem;
+				user-select: none;
+				cursor: pointer;
 			}
 			.back {
 				background-color: #111;
