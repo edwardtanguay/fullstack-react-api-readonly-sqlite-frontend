@@ -16,9 +16,16 @@ export const Flashcard = ({ flashcard }: IProps) => {
 				className="front"
 				onClick={() => handleToggleFlashcard(flashcard)}
 			>
-				{flashcard.categoryName.toUpperCase()}: {flashcard.front}
+				<span className="category">
+					{flashcard.categoryName.toUpperCase()}:
+				</span> {flashcard.front}
 			</div>
-			{flashcard.isOpen && <div className="back" dangerouslySetInnerHTML={{__html:flashcard.backHtml}}></div>}
+			{flashcard.isOpen && (
+				<div
+					className="back"
+					dangerouslySetInnerHTML={{ __html: flashcard.backHtml }}
+				></div>
+			)}
 		</div>
 	);
 };
