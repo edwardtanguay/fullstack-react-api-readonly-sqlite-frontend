@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "cp": "node cli/cp.mjs",
-    "deploy": "git pull && git run build",
+    "deploy": "git pull && npm run build",
     "setupservice": "npm i"
   },
   "dependencies": {
